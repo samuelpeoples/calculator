@@ -1,8 +1,9 @@
 let historyText = [];
-let currentNum = [];
+let inputValue = [];
 let previousNum;
-let currentOperation;
+let currentNum;
 let currentSum;
+let currentOperation;
 
 const buttonList = document.querySelectorAll("button");
 
@@ -29,8 +30,9 @@ buttonList.forEach((button) => {
 	button.addEventListener("click", () => {
 		let checkedChar = button.id.charAt(button.id.length - 1);
 		if (checkedChar === "." || !isNaN(checkedChar)) {
-			currentNum.push(checkedChar);
-			console.log(currentNum);
+			inputValue.push(checkedChar);
+            currentNum = Number(inputValue.join(""));
+            console.log(currentNum);
 		}
 	});
 });
@@ -39,36 +41,50 @@ buttonList.forEach((button) => {
 
 btnAdd.addEventListener("click", () => {
 	currentOperation = add;
-	if (previousNum != undefined) {	
-        historyText.unshift(previousNum); 
-
-    }
-	previousNum = currentNum.join("");
-	currentNum = [];
-    operate(currentOperation, currentNum, previousNum);
-	console.log(currentNum, previousNum);
-	console.log(historyText);
+	processClick();
 });
+
 btnSubtract.addEventListener("click", () => {
 	currentOperation = subtract;
-	previousNum = currentNum.join();
-	currentNum = [];
+	processClick();
 });
 btnMultiply.addEventListener("click", () => {
 	currentOperation = multiply;
-	previousNum = currentNum.join();
-	currentNum = [];
+	processClick();
 });
 btnDivide.addEventListener("click", () => {
 	currentOperation = divide;
-	previousNum = currentNum.join();
-	currentNum = [];
+	processClick();
 });
 
-btnEquals.addEventListener(
-	"click",
-	operate(currentOperation, currentNum, previousNum)
-);
+btnEquals.addEventListener("click", () => {
+	processClick();
+    previousNum = undefined;
+    historyText = [];
+});
+
+btnClear.addEventListener("click", () => {
+    previousNum = undefined;
+    currentSum = undefined;
+    historyText = [];
+    console.clear();
+});
+
+function processClick() {
+    if (previousNum != undefined) {
+        historyText.unshift(previousNum);
+        console.table(historyText);
+        currentSum = operate(currentOperation, previousNum, currentNum);
+    }
+    
+    if (historyText[0] != undefined) {
+        previousNum = currentSum;
+    } else {
+        previousNum = currentNum;
+    }
+    inputValue = [];
+    console.log(currentSum, inputValue, previousNum);
+}
 
 function add(currentTotal, val) {
 	return (currentTotal += val);
@@ -90,4 +106,4 @@ function operate(operation, a, b) {
 	return operation(a, b);
 }
 
-console.log(operate(multiply, 4, 2));
+//console.log(operate(multiply, 4, 2));
