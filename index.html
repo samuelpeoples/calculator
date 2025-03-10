@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
     <link rel="stylesheet" href="style.css">
     <title>Calulator</title>
 </head>
@@ -12,30 +12,34 @@
 <body>
     <div id="container">
         <div id="screen"></div>
-        <div id="screen-hist"></div>
-        <div id="button-row">
-            <div id="button">7</div>
-            <div id="button">8</div>
-            <div id="button">9</div>
-            <div id="button">/</div>
+        <div class="button-row">
+            <div id="screen-hist"></div>
+            <button id="clear" class="button button-half">CLR</button>
         </div>
-        <div id="button-row">
-            <div id="button">4</div>
-            <div id="button">5</div>
-            <div id="button">6</div>
-            <div id="button">*</div>
+        
+        <div class="button-row">
+            <button id="btn7" class="button button-full">7</button>
+            <button id="btn8" class="button button-full">8</button>
+            <button id="btn9" class="button button-full">9</button>
+            <button id="divide" class="button button-full">/</button>
         </div>
-        <div id="button-row">
-            <div id="button">1</div>
-            <div id="button">2</div>
-            <div id="button">3</div>
-            <div id="button">-</div>
+        <div class="button-row">
+            <button id="btn4" class="button button-full">4</button>
+            <button id="btn5" class="button button-full">5</button>
+            <button id="btn6" class="button button-full">6</button>
+            <button id="multiply" class="button button-full">*</button>
         </div>
-        <div id="button-row">
-            <div id="button">0</div>
-            <div id="button">=</div>
-            <div id="button">.</div>
-            <div id="button">+</div>
+        <div class="button-row">
+            <button id="btn1" class="button button-full">1</button>
+            <button id="btn2" class="button button-full">2</button>
+            <button id="btn3" class="button button-full">3</button>
+            <button id="subtract" class="button button-full">-</button>
+        </div>
+        <div class="button-row">
+            <button id="btn0" class="button button-full">0</button>
+            <button id="equals" class="button button-full">=</button>
+            <button id="decimal." class="button button-full">.</button>
+            <button id="add" class="button button-full">+</button>
         </div>
     </div>
 </body>

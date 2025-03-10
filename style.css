@@ -29,24 +29,38 @@ body{
 }
 #screen-hist{
     border: 2px solid black;
-    width: 250px;
+    width: 200px;
     height: 25px;
     background-color: aqua;
 }
-#button-row{
+.button-row{
     width: 100%;
     height: fit-content;
     display: flex;
-    justify-content: space-between;
-    
+    justify-content: space-evenly;
+    gap: 16px;
 }
-#button{
+.button{
     border: 2px solid black;
-    height: 50px;
-    width: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: bisque;
     /*box-shadow: 4px 4px 1px 2px grey;*/
+}
+.button:hover{
+    background-color: rgb(238, 209, 176);
+}
+.button:active{
+    background-color: rgb(228, 198, 163);
+}
+
+.button-full{
+    height: 50px;
+    width: 50px;
+}
+
+.button-half{
+    height: 25px;
+    width: 42px;
 }
