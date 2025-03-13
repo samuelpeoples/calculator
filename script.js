@@ -1,9 +1,11 @@
 let historyText = [];
 let inputValue = [];
+let runningInput = [];
 let previousNum;
 let currentNum;
 let currentSum;
 let currentOperation;
+
 
 const buttonList = document.querySelectorAll("button");
 
@@ -26,47 +28,75 @@ const btnDivide = document.querySelector("#divide");
 
 const btnEquals = document.querySelector("#equals");
 
+const screenMain = document.querySelector("#screen");
+const screenMainText = document.createElement("span"); 
+screenMain.appendChild(screenMainText);
+
+const screenHist = document.querySelector("#screen-hist");
+const screenHistText = document.createElement("span"); 
+screenHist.appendChild(screenHistText);
+
+//ALL BUTTONS
 buttonList.forEach((button) => {
 	button.addEventListener("click", () => {
 		let checkedChar = button.id.charAt(button.id.length - 1);
+
+        //BUTTONS 0 to 9
 		if (checkedChar === "." || !isNaN(checkedChar)) {
 			inputValue.push(checkedChar);
             currentNum = Number(inputValue.join(""));
             console.log(currentNum);
+            updateValues(`${checkedChar}`);
 		}
 	});
 });
 
 //btnDecimal.addEventListener('click', () => currentOperation = subtract );
 
+// ADDITION
 btnAdd.addEventListener("click", () => {
 	currentOperation = add;
 	processClick();
+    updateValues(`+`);
 });
 
+// SUBTRACTION
 btnSubtract.addEventListener("click", () => {
 	currentOperation = subtract;
 	processClick();
+    updateValues(`-`);
 });
+// MULTIPLICATION
 btnMultiply.addEventListener("click", () => {
 	currentOperation = multiply;
 	processClick();
+    updateValues(`*`);
 });
+// DIVISION
 btnDivide.addEventListener("click", () => {
 	currentOperation = divide;
 	processClick();
+    updateValues(`/`);
 });
 
+// EQUALS
 btnEquals.addEventListener("click", () => {
-	processClick();
+    currentSum = operate(currentOperation, previousNum, currentNum);
+    processClick();
     previousNum = undefined;
     historyText = [];
+    screenHistText.textContent += screenMainText.textContent;
+    screenMainText.textContent = currentSum;
+    calculate();
 });
 
+//CLEAR
 btnClear.addEventListener("click", () => {
     previousNum = undefined;
     currentSum = undefined;
     historyText = [];
+    screenHistText.textContent = "";
+    screenMainText.textContent = "";
     console.clear();
 });
 
@@ -74,9 +104,7 @@ function processClick() {
     if (previousNum != undefined) {
         historyText.unshift(previousNum);
         console.table(historyText);
-        currentSum = operate(currentOperation, previousNum, currentNum);
     }
-    
     if (historyText[0] != undefined) {
         previousNum = currentSum;
     } else {
@@ -84,6 +112,32 @@ function processClick() {
     }
     inputValue = [];
     console.log(currentSum, inputValue, previousNum);
+}
+
+function calculate(){
+    //GET ALL ENTERED CHARS THAT ARE CURRENT
+    let enteredNums = runningInput.filter((input, index) => index % 2 == 0);
+    let enteredOperations = runningInput.filter((input, index) => index % 2 != 0);
+    
+    console.log(enteredNums);
+    console.log(enteredOperations);
+    console.log(runningInput);
+
+    for(let i = 0; i < enteredOperations.length; i++){
+        operate
+    }
+    //GET THE VALUES AND THE OPERATIONS
+
+    //FOR EACH SET OF TWO NUMS, OPERATE AND UPDATE THE RUNNING TOTAL
+}
+
+function operate(operation, a, b) {
+	return operation(a, b);
+}
+
+function updateValues(char){
+    runningInput.push(char);
+    screenMainText.textContent += char;
 }
 
 function add(currentTotal, val) {
@@ -100,10 +154,6 @@ function divide(currentTotal, val) {
 
 function multiply(currentTotal, val) {
 	return currentTotal * val;
-}
-
-function operate(operation, a, b) {
-	return operation(a, b);
 }
 
 //console.log(operate(multiply, 4, 2));
