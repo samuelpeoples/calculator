@@ -1,4 +1,4 @@
-let previousInput;
+let previousInput = "";
 let currentInput = [];
 let runningInput = [];
 
@@ -19,165 +19,126 @@ const screenHist = document.querySelector("#screen-hist");
 const screenHistText = document.createElement("span");
 screenHist.appendChild(screenHistText);
 
-const buttonList = document.querySelectorAll("button");
-
-const btn7 = document.querySelector("#btn7");
-const btn8 = document.querySelector("#btn8");
-const btn9 = document.querySelector("#btn9");
-const btnDivide = document
-	.querySelector("#divide")
-	.addEventListener("click", () => {
-		updateOperation("/");
-	});
-
-const btn6 = document.querySelector("#btn6");
-const btn5 = document.querySelector("#btn5");
-const btn4 = document.querySelector("#btn4");
-const btnMultiply = document
-	.querySelector("#multiply")
-	.addEventListener("click", () => {
-		updateOperation("*");
-	});
-
-const btn3 = document.querySelector("#btn3");
-const btn2 = document.querySelector("#btn2");
-const btn1 = document.querySelector("#btn1");
-const btnSubtract = document
-	.querySelector("#subtract")
-	.addEventListener("click", () => {
-		updateOperation("-");
-	});
-
-const btn0 = document.querySelector("#btn0");
-const btnDecimal = document.querySelector("#decimal");
-const btnEquals = document
-	.querySelector("#equals")
-	.addEventListener("click", () => {
-		operate(currentOperation, previousNum, currentNum);
-	});
-const btnAdd = document.querySelector("#add").addEventListener("click", () => {
-	updateOperation("+");
-});
-const btnClea = document
-	.querySelector("#btnClear")
-	.addEventListener("click", clear);
-
-buttonList.forEach((button) => {
+const buttonList = document.querySelectorAll("button").forEach((button) => {
 	button.addEventListener("click", () => {
-		let checkedChar = button.id.charAt(button.id.length - 1);
-		//BUTTONS 0 to 9
+		let id = button.id;
+		let checkedChar = id.charAt(id.length - 1);
+
 		if (checkedChar === "." || !isNaN(checkedChar)) {
 			updateValues(`${checkedChar}`);
+		} else if (["add", "subtract", "multiply", "divide"].includes(id)) {
+			updateOperation(id);
+		} else if (id === "equals") {
+			operate(currentOperation, previousNum, currentNum);
+		} else {
+			clear();
 		}
 	});
 });
 
 function clear() {
-	previousNum = undefined;
-	currentNum = undefined;
-	sum = undefined;
-	previousInput;
+	previousInput = "";
+    currentInput = [];
 	runningInput = [];
-	currentInput = [];
-	currentOperation = undefined;
+
+    previousNum = null;
+	currentNum = null;
+	sum = null;
+
+	currentOperation = null;
+    previousOperation = null;
+    operationSymbol = "";
 	screenHistText.textContent = "";
 	screenMainText.textContent = "";
 	console.clear();
 }
-
-function add(arg1, arg2) {
-	return arg1 + arg2;
-}
-
-function subtract(arg1, arg2) {
-	return arg1 - arg2;
-}
-
-function divide(arg1, arg2) {
-	return arg1 / arg2;
-}
-
-function multiply(arg1, arg2) {
-	return arg1 * arg2;
+const operations = {
+    add: (a,b) => a + b,
+    subtract:(a,b) => a - b,
+    multiply:(a,b) => a * b,
+    divide:(a,b) => (a !== 0 && b !== 0 ? a / b: "No")
 }
 
 function updateOperation(arg) {
-	if (currentOperation != undefined) previousOperation = currentOperation;
+    if ( isNaN(previousInput || previousInput != ".")) return;
+
+	if (currentOperation != null) previousOperation = currentOperation;
 	switch (arg) {
-		case "+":
-			currentOperation = add;
-            operationSymbol = arg;
+		case "add":
+			currentOperation = operations[arg];
+			operationSymbol = "+";
 			break;
-		case "-":
-			currentOperation = subtract;
-            operationSymbol = arg;
+		case "subtract":
+			currentOperation = operations[arg];
+			operationSymbol = "-";
 			break;
-		case "*":
-			currentOperation = multiply;
-            operationSymbol = arg;
+		case "multiply":
+			currentOperation = operations[arg];
+			operationSymbol = "*";
 			break;
-		case "/":
-			currentOperation = divide;
-            operationSymbol = arg;
+		case "divide":
+			currentOperation = operations[arg];
+			operationSymbol = "/";
 			break;
 	}
-	if (previousOperation != undefined && completedOperation != true) operate(previousOperation, previousNum, currentNum);
-	updateScreen(arg);
-    completedOperation = false;
+
+	if (previousOperation != null && !completedOperation)
+		operate(previousOperation, previousNum, currentNum);
+
+    if (currentNum != null) {
+        previousNum = currentNum;
+        currentNum = null
+    }
+
+	updateScreen(operationSymbol);
+	completedOperation = false;
 }
 
 function updateValues(char) {
-    if(completedOperation) { 
-        clear();
-        completedOperation = false;
-    }
+	if (char === "." && previousInput.includes(".")) return;
 
-    if(currentNum != undefined) previousNum = currentNum;
-    previousInput = char;
+	if (completedOperation) {
+		clear();
+		completedOperation = false;
+	}
+
+	previousInput = char;
 	updateScreen(char);
-
-	//currentInput = [];
 }
 
 function operate(operation, arg1, arg2) {
-	let num1 = Number(arg1);
-	let num2 = Number(arg2);
-    
-	sum = operation(num1, num2);
-    console.log(`${previousNum} ${operationSymbol} ${currentNum} = ${sum}`);
-    console.log(sum)
+	sum = operation(Number(arg1), Number(arg2));
+	console.log(`${previousNum} ${operationSymbol} ${currentNum} = ${sum}`);
 	previousNum = sum;
-    console.log(previousNum)
-	currentNum = undefined;
-    completedOperation = true;
+	currentNum = null;
+	completedOperation = true;
 	screenMainText.textContent = sum;
-    screenHistText.textContent += ("=" + previousInput);
+	screenHistText.textContent += "=" + sum;
 	return sum;
 }
 
 function updateScreen(char) {
 	if (isNaN(previousInput) && char != "." && isNaN(char)) return;
 
-	if (char == "+" || char ==  "-" || char ==  "/" || char ==  "*") {
+	if (char === operationSymbol) {
 		runningInput.push(char);
 		if (runningInput.length != 1) runningInput.push("");
-        console.log(previousNum)
 	} else {
-		if (runningInput[length] != undefined) {
-            let newNum = runningInput.pop();
+		if (runningInput[length] != null) {
+            console.log("pop")
+			let newNum = (runningInput.pop());
 			newNum += char;
 			runningInput.push(newNum);
-            currentNum = newNum;
+			currentNum = newNum;
+		} else {
+			runningInput.push(char);
+			currentNum = char;
 		}
-        else{
-            runningInput.push(char);
-            currentNum = char;
-        }
 	}
-    
+
 	previousInput = char;
-    screenHistText.textContent += previousInput;
-    screenMainText.textContent += char;
+	screenHistText.textContent += previousInput;
+	screenMainText.textContent += char;
 	console.log(`Previous ${previousNum}`);
 	console.log(`Current ${currentNum}`);
 }
