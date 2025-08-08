@@ -41,11 +41,11 @@ document.addEventListener("keydown", (e) => {
 
 const buttonList = document.querySelectorAll("button").forEach((button) => {
 	button.addEventListener("click", () => {
+		let value = button.getAttribute("data-value");
 		let id = button.id;
-		let checkedChar = id.charAt(id.length - 1);
 
-		if (checkedChar === "." || !isNaN(checkedChar)) {
-			updateValues(`${checkedChar}`);
+		if (value !== null && value !== undefined) {
+			updateValues(value);
 		} else if (["add", "subtract", "multiply", "divide"].includes(id)) {
 			updateOperation(id);
 		} else if (id === "equals") {
@@ -79,11 +79,11 @@ const operations = {
 	add: (a, b) => a + b,
 	subtract: (a, b) => a - b,
 	multiply: (a, b) => a * b,
-	divide: (a, b) => (a !== 0 && b !== 0 ? a / b : "No"),
+	divide: (a, b) => (b !== 0 ? a / b : "No"),
 };
 
 function updateOperation(arg) {
-	if (isNaN(previousInput || previousInput != ".")) return;
+	if (previousInput === ""|| previousInput === ".") return;
 
 	if (currentOperation != null) previousOperation = currentOperation;
 	switch (arg) {
@@ -111,6 +111,7 @@ function updateOperation(arg) {
 	if (currentNum != null) {
 		previousNum = currentNum;
 		currentNum = null;
+		previousInput = "";
 	}
 
 	updateScreen(operationSymbol);
@@ -125,7 +126,8 @@ function updateValues(char) {
 		completedOperation = false;
 	}
 
-	previousInput = char;
+	previousInput += char;
+	currentNum = previousInput;
 	updateScreen(char);
 }
 
@@ -141,27 +143,6 @@ function operate(operation, arg1, arg2) {
 }
 
 function updateScreen(char) {
-	if (isNaN(previousInput) && char != "." && isNaN(char)) return;
-
-	if (char === operationSymbol) {
-		runningInput.push(char);
-		if (runningInput.length != 1) runningInput.push("");
-	} else {
-		if (runningInput[length] != null) {
-			console.log("pop");
-			let newNum = runningInput.pop();
-			newNum += char;
-			runningInput.push(newNum);
-			currentNum = newNum;
-		} else {
-			runningInput.push(char);
-			currentNum = char;
-		}
-	}
-
-	previousInput = char;
-	screenMainText.textContent += previousInput;
-	screenHistText.textContent += char;
-	console.log(`Previous ${previousNum}`);
-	console.log(`Current ${currentNum}`);
+    screenMainText.textContent += char;
+    screenHistText.textContent += char;
 }
