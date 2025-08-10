@@ -1,79 +1,82 @@
-*{
-    box-sizing:content-box;
+* {
+	box-sizing: content-box;
 }
 
-html, body{
-    height: 100%;
+html,
+body {
+	height: 100%;
 }
-body{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
+body {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
-#container{
-    max-width: 250px;
-    height: 350px;
-    background-color: darkgray;
-    display: flex;
-    flex-wrap: wrap;
-    padding: 10px;
-    align-items: center;
-    justify-content: space-evenly;
+#container {
+	max-width: 250px;
+	height: 350px;
+	background-color: darkgray;
+	display: flex;
+	flex-wrap: wrap;
+	padding: 15px;
+	border: 4px solid black;
+	border-radius: 5%;
+	box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.5);
+	align-items: center;
+	justify-content: space-evenly;
 }
-#screen{
-    text-align: right;
-    border: 2px solid black;
-    width: 250px;
-    height: 50px;
-    background-color: aqua;
-    align-content: center;
-    font-size: 1.4em;
+#screen {
+	text-align: right;
+	border: 2px solid black;
+	width: 250px;
+	height: 50px;
+	background-color: aqua;
+	align-content: center;
+	font-size: 1.4em;
 }
-#screen-hist{
-    text-align: right;
-    overflow: scroll;
-    text-wrap: nowrap;
-    white-space: nowrap;
-    border: 2px solid black;
-    width: 200px;
-    height: 25px;
-    background-color: aqua;
-    place-content: center;
+#screen-hist {
+	text-align: right;
+	overflow-x: auto;
+	white-space: nowrap;
+	scroll-behavior: instant;
+	border: 2px solid black;
+	width: 220px;
+	height: 25px;
+	background-color: aqua;
+	place-content: center;
 }
-.button-row{
-    width: 100%;
-    height: fit-content;
-    display: flex;
-    justify-content: space-evenly;
-    gap: 16px;
+.button-row {
+	width: 100%;
+	height: fit-content;
+	display: flex;
+	justify-content: space-evenly;
+	gap: 8px;
 }
-.button{
-    border: 2px solid black;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: bisque;
-    /*box-shadow: 4px 4px 1px 2px grey;*/
+.button {
+	border: 2px solid black;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: bisque;
+	box-shadow: 1px 0px 1px 0px grey;
 }
-.button:hover{
-    background-color: rgb(238, 209, 176);
+.button:hover {
+	background-color: rgb(238, 209, 176);
 }
-.button:active{
-    background-color: rgb(228, 198, 163);
-}
-
-.button-full{
-    height: 50px;
-    width: 50px;
+.button:active {
+	background-color: rgb(228, 198, 163);
 }
 
-.button-half{
-    height: 25px;
-    width: 42px;
+.button-full {
+	height: 50px;
+	width: 50px;
 }
 
-span{
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    padding: 1em .4em;
+.button-half {
+	height: 25px;
+	width: 42px;
+}
+
+span {
+	font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+	padding: 1em 0.4em;
 }

@@ -166,9 +166,11 @@ function operate(operation, arg1, arg2) {
 function updateScreen(char) {
 	screenMainText.textContent += char;
 	screenHistText.textContent += char;
+	screenHistText.parentElement.scrollLeft = screenHistText.parentElement.scrollWidth;
 }
 
 function showResult(sum) {
 	screenMainText.textContent = sum; // Replace, don't append
 	screenHistText.textContent += "=" + sum; // Optionally append to history
+	screenHistText.parentElement.scrollLeft = screenHistText.parentElement.scrollWidth;
 }
