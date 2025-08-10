@@ -22,6 +22,7 @@ body{
     justify-content: space-evenly;
 }
 #screen{
+    text-align: right;
     border: 2px solid black;
     width: 250px;
     height: 50px;
@@ -30,10 +31,15 @@ body{
     font-size: 1.4em;
 }
 #screen-hist{
+    text-align: right;
+    overflow: scroll;
+    text-wrap: nowrap;
+    white-space: nowrap;
     border: 2px solid black;
     width: 200px;
     height: 25px;
     background-color: aqua;
+    place-content: center;
 }
 .button-row{
     width: 100%;
